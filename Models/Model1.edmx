@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="loginModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="RFIDAuthUsers">
+          <Key>
+            <PropertyRef Name="RFIDUserId" />
+          </Key>
+          <Property Name="RFIDUserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserUID" Type="varchar(max)" Nullable="false" />
+          <Property Name="CardUID" Type="varchar(max)" Nullable="false" />
+          <Property Name="RFIDDeviceId" Type="int" Nullable="false" />
+          <Property Name="IsAuthorized" Type="bit" Nullable="false" />
+          <Property Name="IsFlagged" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RFIDDevices">
+          <Key>
+            <PropertyRef Name="RFIDDeviceId" />
+          </Key>
+          <Property Name="RFIDDeviceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeviceName" Type="varchar(max)" Nullable="false" />
+          <Property Name="DeviceKey" Type="varchar" MaxLength="850" Nullable="false" />
+          <Property Name="DeviceAuthorizedDate" Type="date" Nullable="false" />
+          <Property Name="DeviceAuthorizedBy" Type="varchar(max)" />
+          <Property Name="DeviceLocation" Type="varchar(max)" />
+          <Property Name="DeviceDepartment" Type="varchar(max)" />
+          <Property Name="isActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="RFIDUserLogs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RFIDUserId" Type="int" Nullable="false" />
+          <Property Name="TimeIn" Type="datetime" />
+          <Property Name="TimeOut" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="loginModelStoreContainer">
+          <EntitySet Name="RFIDAuthUsers" EntityType="Self.RFIDAuthUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RFIDDevices" EntityType="Self.RFIDDevices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RFIDUserLogs" EntityType="Self.RFIDUserLogs" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="loginModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="RFIDDevice">
+          <Key>
+            <PropertyRef Name="RFIDDeviceId" />
+          </Key>
+          <Property Name="RFIDDeviceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeviceName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DeviceKey" Type="String" MaxLength="850" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DeviceAuthorizedDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DeviceAuthorizedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DeviceLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DeviceDepartment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="RFIDUserLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RFIDUserId" Type="Int32" Nullable="false" />
+          <Property Name="TimeIn" Type="DateTime" Precision="3" />
+          <Property Name="TimeOut" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="loginEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="RFIDDevices" EntityType="Self.RFIDDevice" />
+          <EntitySet Name="RFIDUserLogs" EntityType="Self.RFIDUserLog" />
+          <EntitySet Name="RFIDAuthUsers" EntityType="loginModel.RFIDAuthUser" />
+        </EntityContainer>
+        <EntityType Name="RFIDAuthUser">
+          <Key>
+            <PropertyRef Name="RFIDUserId" />
+          </Key>
+          <Property Name="RFIDUserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserUID" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CardUID" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="RFIDDeviceId" Type="Int32" Nullable="false" />
+          <Property Name="IsAuthorized" Type="Boolean" Nullable="false" />
+          <Property Name="IsFlagged" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="loginModelStoreContainer" CdmEntityContainer="loginEntities">
+          <EntitySetMapping Name="RFIDDevices">
+            <EntityTypeMapping TypeName="loginModel.RFIDDevice">
+              <MappingFragment StoreEntitySet="RFIDDevices">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="RFIDDeviceId" ColumnName="RFIDDeviceId" />
+                <ScalarProperty Name="DeviceName" ColumnName="DeviceName" />
+                <ScalarProperty Name="DeviceKey" ColumnName="DeviceKey" />
+                <ScalarProperty Name="DeviceAuthorizedDate" ColumnName="DeviceAuthorizedDate" />
+                <ScalarProperty Name="DeviceAuthorizedBy" ColumnName="DeviceAuthorizedBy" />
+                <ScalarProperty Name="DeviceLocation" ColumnName="DeviceLocation" />
+                <ScalarProperty Name="DeviceDepartment" ColumnName="DeviceDepartment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RFIDUserLogs">
+            <EntityTypeMapping TypeName="loginModel.RFIDUserLog">
+              <MappingFragment StoreEntitySet="RFIDUserLogs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RFIDUserId" ColumnName="RFIDUserId" />
+                <ScalarProperty Name="TimeIn" ColumnName="TimeIn" />
+                <ScalarProperty Name="TimeOut" ColumnName="TimeOut" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RFIDAuthUsers">
+            <EntityTypeMapping TypeName="loginModel.RFIDAuthUser">
+              <MappingFragment StoreEntitySet="RFIDAuthUsers">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsFlagged" ColumnName="IsFlagged" />
+                <ScalarProperty Name="IsAuthorized" ColumnName="IsAuthorized" />
+                <ScalarProperty Name="RFIDDeviceId" ColumnName="RFIDDeviceId" />
+                <ScalarProperty Name="CardUID" ColumnName="CardUID" />
+                <ScalarProperty Name="UserUID" ColumnName="UserUID" />
+                <ScalarProperty Name="RFIDUserId" ColumnName="RFIDUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
